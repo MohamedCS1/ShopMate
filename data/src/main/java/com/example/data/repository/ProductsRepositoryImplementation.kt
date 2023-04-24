@@ -7,6 +7,6 @@ import retrofit2.Call
 
 class ProductsRepositoryImplementation(private val apiService: ApiService):ProductsRepository{
 
-    override fun getProductsFromRemote(): Call<ProductsResponse> = apiService.getProducts()
+    override suspend fun getProductsFromRemote(): Call<ProductsResponse> = apiService.getProducts()
 
 }

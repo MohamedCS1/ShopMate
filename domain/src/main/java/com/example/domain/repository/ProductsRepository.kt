@@ -4,5 +4,5 @@ import com.example.domain.entity.ProductsResponse
 import retrofit2.Call
 
 interface ProductsRepository {
-    fun getProductsFromRemote(): Call<ProductsResponse>
+    suspend fun getProductsFromRemote(): Call<ProductsResponse>
 }
