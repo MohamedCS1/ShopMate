@@ -10,7 +10,7 @@ import com.example.techstore.databinding.CardProductBinding
 
 class ProductAdapter: RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    private lateinit var productsResponse:ProductsResponse
+    private var productsResponse:ProductsResponse = ProductsResponse()
     private lateinit var context:Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -38,8 +38,9 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(val binding:CardProductBinding):RecyclerView.ViewHolder(binding.root)
 
-    protected fun submitProductResponse(productsResponse: ProductsResponse)
+    fun submitProductResponse(productsResponse: ProductsResponse)
     {
         this.productsResponse = productsResponse
+        notifyDataSetChanged()
     }
 }

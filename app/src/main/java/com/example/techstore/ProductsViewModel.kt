@@ -17,27 +17,22 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(private val getProductsUseCase:GetProducts):ViewModel() {
 
-    private val _products:MutableStateFlow<ProductsResponse?> = MutableStateFlow(null)
+    private val _products:MutableStateFlow<ProductsResponse?> = MutableStateFlow(ProductsResponse())
 
     val products:StateFlow<ProductsResponse?> = _products
 
     fun getProducts()
     {
         viewModelScope.launch {
-            getProductsUseCase().enqueue(object :Callback<ProductsResponse>{
-                override fun onResponse(
-                    call: Call<ProductsResponse>,
-                    response: Response<ProductsResponse>
-                ) {
-                    _products.value = response.body()
-                }
-
-                override fun onFailure(call: Call<ProductsResponse>, t: Throwable) {
-                    _products.value = null
-                }
-            })
+        try {
+            _products.value =  getProductsUseCase()
+        }catch (ex:Exception){
+            _products.value = null
+            println(ex)
         }
 
+        }
     }
 
 }
+
