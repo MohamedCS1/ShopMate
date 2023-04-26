@@ -1,21 +1,18 @@
 package com.example.techstore
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.ProductsResponse
-import com.example.domain.usecase.GetProducts
+import com.example.domain.model.ProductsResponse
+import com.example.domain.usecase.GetLocalProductsUseCase
+import com.example.domain.usecase.GetRemoteProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductsViewModel @Inject constructor(private val getProductsUseCase:GetProducts):ViewModel() {
+class ProductsViewModel @Inject constructor(private val getRemoteProductsUseCase:GetRemoteProductsUseCase ,private val getLocalProductsUseCase: GetLocalProductsUseCase):ViewModel() {
 
     private val _products:MutableStateFlow<ProductsResponse?> = MutableStateFlow(ProductsResponse())
 
@@ -25,9 +22,9 @@ class ProductsViewModel @Inject constructor(private val getProductsUseCase:GetPr
     {
         viewModelScope.launch {
         try {
-            _products.value =  getProductsUseCase()
+            _products.value =  getRemoteProductsUseCase()
         }catch (ex:Exception){
-            _products.value = null
+            _products.value = getLocalProductsUseCase()
             println(ex)
         }
 

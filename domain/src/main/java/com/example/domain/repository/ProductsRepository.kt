@@ -1,9 +1,8 @@
 package com.example.domain.repository
 
-import com.example.domain.entity.ProductsResponse
-import retrofit2.Call
+import com.example.domain.model.ProductsResponse
 
 interface ProductsRepository {
-    suspend fun getProductsFromRemote():ProductsResponse
-    suspend fun getProductsFromLocal():ProductsResponse
+    suspend fun getRemoteProducts():ProductsResponse
+    suspend fun getLocalProducts():ProductsResponse
 }
