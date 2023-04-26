@@ -1,4 +1,4 @@
-package com.example.techstore
+package com.example.techstore.presentation
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.ProductsResponse
 import com.example.techstore.databinding.CardProductBinding
+import com.example.techstore.util.ConnectionState
 
-class ProductAdapter: RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
-
+class ProductAdapter(): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+    private var connectionState: ConnectionState = ConnectionState.CONNECTED
     private var productsResponse:ProductsResponse = ProductsResponse()
     private lateinit var context:Context
 
@@ -30,7 +31,11 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
                 binding.textViewTitle.text = title
                 binding.textViewCategory.text = category
                 binding.textViewPrice.text = "$ $price"
-                Glide.with(context).load(image).into(binding.imageViewProduct)
+                if (connectionState == ConnectionState.CONNECTED)
+                {
+                    Glide.with(context).load(image).into(binding.imageViewProduct)
+                }else Glide.with(context).load(completeImage).into(binding.imageViewProduct)
+
             }
 
         }
@@ -42,5 +47,10 @@ class ProductAdapter: RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
     {
         this.productsResponse = productsResponse
         notifyDataSetChanged()
+    }
+
+    fun setConnectionState(connectionState: ConnectionState)
+    {
+        this.connectionState = connectionState
     }
 }

@@ -1,4 +1,4 @@
-package com.example.techstore
+package com.example.techstore.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +20,8 @@ class ProductsViewModel @Inject constructor(private val getRemoteProductsUseCase
 
     val products:StateFlow<ProductsResponse?> = _products
 
+    val localeProducts:MutableStateFlow<ProductsResponse?> = MutableStateFlow(ProductsResponse())
+
     private val productsResponse = ProductsResponse()
 
     fun getProducts()
@@ -29,8 +31,7 @@ class ProductsViewModel @Inject constructor(private val getRemoteProductsUseCase
             _products.value =  getRemoteProductsUseCase()
         }catch (ex:Exception){
             productsResponse.addAll(getLocalProductsUseCase())
-            _products.value = productsResponse
-            println(ex)
+            localeProducts.value = productsResponse
         }
 
         }
