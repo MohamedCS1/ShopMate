@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.ProductsResponse
 import com.example.techstore.databinding.CardProductBinding
-import com.example.techstore.util.ConnectionState
+import com.example.techstore.util.DataSource
 
 class ProductAdapter(): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
-    private var connectionState: ConnectionState = ConnectionState.CONNECTED
+    private var dataSource: DataSource = DataSource.Remote
     private var productsResponse:ProductsResponse = ProductsResponse()
     private lateinit var context:Context
 
@@ -31,7 +31,7 @@ class ProductAdapter(): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>()
                 binding.textViewTitle.text = title
                 binding.textViewCategory.text = category
                 binding.textViewPrice.text = "$ $price"
-                if (connectionState == ConnectionState.CONNECTED)
+                if (dataSource == DataSource.Remote)
                 {
                     Glide.with(context).load(image).into(binding.imageViewProduct)
                 }else Glide.with(context).load(completeImage).into(binding.imageViewProduct)
@@ -49,8 +49,8 @@ class ProductAdapter(): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>()
         notifyDataSetChanged()
     }
 
-    fun setConnectionState(connectionState: ConnectionState)
+    fun setDataSource(dataSource: DataSource)
     {
-        this.connectionState = connectionState
+        this.dataSource = dataSource
     }
 }

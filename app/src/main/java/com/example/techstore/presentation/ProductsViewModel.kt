@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.ProductsResponse
 import com.example.domain.model.ProductsResponseItem
-import com.example.domain.usecase.StoreProductsUseCase
+import com.example.domain.usecase.CacheProductsUseCase
 import com.example.domain.usecase.GetLocalProductsUseCase
 import com.example.domain.usecase.GetRemoteProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductsViewModel @Inject constructor(private val getRemoteProductsUseCase:GetRemoteProductsUseCase ,private val getLocalProductsUseCase: GetLocalProductsUseCase ,private val storeProductsUseCase: StoreProductsUseCase):ViewModel() {
+class ProductsViewModel @Inject constructor(private val getRemoteProductsUseCase:GetRemoteProductsUseCase ,private val getLocalProductsUseCase: GetLocalProductsUseCase ,private val cacheProductsUseCase: CacheProductsUseCase):ViewModel() {
 
     private val _products:MutableStateFlow<ProductsResponse?> = MutableStateFlow(ProductsResponse())
 
@@ -40,7 +40,7 @@ class ProductsViewModel @Inject constructor(private val getRemoteProductsUseCase
     fun insertProduct(productsResponseItem: ProductsResponseItem)
     {
         viewModelScope.launch {
-            storeProductsUseCase.insertProduct(productsResponseItem)
+            cacheProductsUseCase.insertProduct(productsResponseItem)
         }
     }
 

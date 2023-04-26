@@ -4,12 +4,11 @@ import com.example.data.local.ProductDao
 import com.example.data.remote.ApiService
 import com.example.data.repository.ProductsLocalDataSourceImpl
 import com.example.data.repository.ProductsRepositoryImpl
-import com.example.data.repository.StoreProductsImpl
+import com.example.data.repository.CacheProductsImpl
 import com.example.domain.repository.ProductsLocalDataSource
 import com.example.domain.repository.ProductsRemoteDataSource
 import com.example.domain.repository.ProductsRepository
-import com.example.domain.repository.StoreProducts
-import com.example.domain.usecase.StoreProductsUseCase
+import com.example.domain.repository.CacheProducts
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,14 +31,14 @@ object RepositoryModule {
     }
 
     @Provides
-    fun provideStoreProduct(productDao: ProductDao, dispatcher: CoroutineDispatcher):StoreProducts
+    fun provideStoreProduct(productDao: ProductDao, dispatcher: CoroutineDispatcher):CacheProducts
     {
-        return StoreProductsImpl(productDao ,dispatcher)
+        return CacheProductsImpl(productDao ,dispatcher)
     }
 
     @Provides
-    fun provideProductsRepository(productsRemoteDataSource: ProductsRemoteDataSource ,productsLocalDataSource: ProductsLocalDataSource ,storeProducts: StoreProducts):ProductsRepository
+    fun provideProductsRepository(productsRemoteDataSource: ProductsRemoteDataSource, productsLocalDataSource: ProductsLocalDataSource, cacheProducts: CacheProducts):ProductsRepository
     {
-        return ProductsRepositoryImpl(productsRemoteDataSource ,productsLocalDataSource ,storeProducts)
+        return ProductsRepositoryImpl(productsRemoteDataSource ,productsLocalDataSource ,cacheProducts)
     }
 }

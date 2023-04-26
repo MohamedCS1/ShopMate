@@ -1,7 +1,7 @@
 package com.example.techstore.di
 
 import com.example.domain.repository.ProductsRepository
-import com.example.domain.usecase.StoreProductsUseCase
+import com.example.domain.usecase.CacheProductsUseCase
 import com.example.domain.usecase.GetLocalProductsUseCase
 import com.example.domain.usecase.GetRemoteProductsUseCase
 import dagger.Module
@@ -26,8 +26,8 @@ object UseCaseModule {
     }
 
     @Provides
-    fun provideStoreProductUseCase(productsRepository: ProductsRepository): StoreProductsUseCase
+    fun provideStoreProductUseCase(productsRepository: ProductsRepository): CacheProductsUseCase
     {
-        return StoreProductsUseCase(productsRepository)
+        return CacheProductsUseCase(productsRepository)
     }
 }

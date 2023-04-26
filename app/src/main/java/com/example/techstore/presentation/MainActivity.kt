@@ -10,7 +10,7 @@ import com.example.domain.model.ProductsResponse
 import com.example.domain.model.ProductsResponseItem
 import com.example.techstore.databinding.ActivityMainBinding
 import com.example.techstore.util.BitmapUtil.getBitmap
-import com.example.techstore.util.ConnectionState
+import com.example.techstore.util.DataSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                 if (productsResponse == null) Toast.makeText(this@MainActivity ,"Something wrong please try again" ,Toast.LENGTH_SHORT).show()
                 else
                 {
+                    productAdapter.setDataSource(DataSource.Remote)
                     productAdapter.submitProductResponse(productsResponse?: ProductsResponse())
                     productsResponse.forEach {
                         product->
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             productsViewModel.localeProducts.collect{
-                productAdapter.setConnectionState(ConnectionState.DISCONNECTED)
+                productAdapter.setDataSource(DataSource.Local)
                 productAdapter.submitProductResponse(it!!)
             }
         }
