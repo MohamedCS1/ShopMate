@@ -12,8 +12,8 @@ import com.example.domain.model.ProductsResponseItem
 interface ProductDao {
 
     @Insert
-    fun insertProduct(productsResponse: ProductsResponse)
+    fun insertProduct(productsResponseItem: ProductsResponseItem)
 
     @Query("select * from productsDatabase")
-    fun getAllProducts():ProductsResponse
+    fun getAllProducts():List<ProductsResponseItem>
 }

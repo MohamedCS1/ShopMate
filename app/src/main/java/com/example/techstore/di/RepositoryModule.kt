@@ -4,15 +4,17 @@ import com.example.data.local.ProductDao
 import com.example.data.remote.ApiService
 import com.example.data.repository.ProductsLocalDataSourceImpl
 import com.example.data.repository.ProductsRepositoryImpl
+import com.example.data.repository.StoreProductsImpl
 import com.example.domain.repository.ProductsLocalDataSource
 import com.example.domain.repository.ProductsRemoteDataSource
 import com.example.domain.repository.ProductsRepository
+import com.example.domain.repository.StoreProducts
+import com.example.domain.usecase.StoreProductsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -30,8 +32,14 @@ object RepositoryModule {
     }
 
     @Provides
-    fun provideProductsRepository(productsRemoteDataSource: ProductsRemoteDataSource ,productsLocalDataSource: ProductsLocalDataSource):ProductsRepository
+    fun provideStoreProduct(productDao: ProductDao, dispatcher: CoroutineDispatcher):StoreProducts
     {
-        return ProductsRepositoryImpl(productsRemoteDataSource ,productsLocalDataSource)
+        return StoreProductsImpl(productDao ,dispatcher)
+    }
+
+    @Provides
+    fun provideProductsRepository(productsRemoteDataSource: ProductsRemoteDataSource ,productsLocalDataSource: ProductsLocalDataSource ,storeProducts: StoreProducts):ProductsRepository
+    {
+        return ProductsRepositoryImpl(productsRemoteDataSource ,productsLocalDataSource ,storeProducts)
     }
 }

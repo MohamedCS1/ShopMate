@@ -8,7 +8,7 @@ import com.example.domain.model.ProductsResponseItem
 import com.example.domain.model.Rating
 
 
-@Database(entities = [ProductsResponse::class ,ProductsResponseItem::class ,Rating::class] , version = 4 , exportSchema = false)
+@Database(entities = [ProductsResponseItem::class ,Rating::class] , version = 4 , exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ProductsDatabase:RoomDatabase() {
     abstract fun productDao():ProductDao
