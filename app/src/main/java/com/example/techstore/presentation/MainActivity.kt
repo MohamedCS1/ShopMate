@@ -1,7 +1,12 @@
 package com.example.techstore.presentation
 
+import android.app.ActivityOptions
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +16,7 @@ import com.example.domain.model.ProductsResponseItem
 import com.example.techstore.databinding.ActivityMainBinding
 import com.example.techstore.util.BitmapUtil.getBitmap
 import com.example.techstore.util.DataSource
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -22,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding:ActivityMainBinding
     lateinit var productAdapter: ProductAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = false
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -54,6 +64,21 @@ class MainActivity : AppCompatActivity() {
                 productAdapter.submitProductResponse(it!!)
             }
         }
+        productAdapter.onProductClick(object :onProductClickListener{
+            override fun onProductClick(
+                itemView: View,
+                productsResponseItem: ProductsResponseItem,
+                dataSource: DataSource
+            ) {
+
+                val intent = Intent(this@MainActivity ,DetailActivity::class.java)
+                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, itemView, "transitionNameA" )
+                intent.putExtra("product" ,productsResponseItem)
+                intent.putExtra("dataSource" ,dataSource)
+                startActivity(intent ,options.toBundle())
+
+            }
+        })
 
 
     }

@@ -15,4 +15,4 @@ data class ProductsResponseItem(
     val price: Double,
     @Embedded val rating: Rating,
     val title: String
-)
+):java.io.Serializable

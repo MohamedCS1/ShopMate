@@ -8,11 +8,15 @@ import com.bumptech.glide.Glide
 import com.example.domain.model.ProductsResponse
 import com.example.techstore.databinding.CardProductBinding
 import com.example.techstore.util.DataSource
+import javax.inject.Inject
 
 class ProductAdapter(): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
     private var dataSource: DataSource = DataSource.Remote
     private var productsResponse:ProductsResponse = ProductsResponse()
     private lateinit var context:Context
+    @Inject
+    lateinit var onProductClickListener: onProductClickListener
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         context = parent.context
@@ -38,6 +42,10 @@ class ProductAdapter(): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>()
 
             }
 
+            holder.itemView.setOnClickListener {
+                onProductClickListener.onProductClick(holder.itemView ,productsResponse[position] ,dataSource)
+            }
+
         }
     }
 
@@ -47,6 +55,11 @@ class ProductAdapter(): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>()
     {
         this.productsResponse = productsResponse
         notifyDataSetChanged()
+    }
+
+    fun onProductClick(onProductClickListener: onProductClickListener)
+    {
+        this.onProductClickListener = onProductClickListener
     }
 
     fun setDataSource(dataSource: DataSource)

@@ -7,4 +7,4 @@ import androidx.room.PrimaryKey
 data class Rating(
     @PrimaryKey val count: Int,
     val rate: Double
-)
+):java.io.Serializable
