@@ -1,5 +1,4 @@
-TechStore
-a simple android application that demonstrates modern Android development based on Clean Architecture
+🛍️ ShopMate a simple android application that demonstrates modern Android development based on Clean Architecture
 # Tech stack
 
 - Kotlin : Programming language.
