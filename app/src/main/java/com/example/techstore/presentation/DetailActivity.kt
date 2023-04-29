@@ -16,16 +16,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 class DetailActivity : AppCompatActivity() {
     lateinit var binding:ActivityDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-        ViewCompat.setTransitionName(findViewById<View>(android.R.id.content), "transitionNameA")
-        setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-        val materialTransform = MaterialContainerTransform().apply {
-            addTarget(android.R.id.content)
-            duration = 450
-            pathMotion = MaterialArcMotion()
-        }
-        window.sharedElementEnterTransition = materialTransform
-
+        itemAnimation()
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,15 +28,26 @@ class DetailActivity : AppCompatActivity() {
         binding.textViewTitle.text = product.title
         binding.textViewCategory.text = product.category
         binding.textViewDescription.text = product.description
-        binding.textViewPrice.text = "${product.price}"
+        binding.textViewPrice.text = "$ ${product.price}"
 
-        if (dataSource == DataSource.Remote)
-        {
-            Glide.with(this).load(product.image).into(binding.imageViewProduct)
-        }else
-        {
-            Glide.with(this).load(product.completeImage).into(binding.imageViewProduct)
+        binding.imageViewButtonBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
 
+        if (dataSource == DataSource.Remote) Glide.with(this).load(product.image).into(binding.imageViewProduct)
+        else Glide.with(this).load(product.completeImage).into(binding.imageViewProduct)
+    }
+
+    private fun itemAnimation()
+    {
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        ViewCompat.setTransitionName(findViewById<View>(android.R.id.content), "transitionNameA")
+        setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        val materialTransform = MaterialContainerTransform().apply {
+            addTarget(android.R.id.content)
+            duration = 450
+            pathMotion = MaterialArcMotion()
+        }
+        window.sharedElementEnterTransition = materialTransform
     }
 }

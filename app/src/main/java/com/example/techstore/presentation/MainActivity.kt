@@ -19,6 +19,7 @@ import com.example.techstore.util.DataSource
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -28,11 +29,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding:ActivityMainBinding
     lateinit var productAdapter: ProductAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-        window.sharedElementsUseOverlay = false
-
         super.onCreate(savedInstanceState)
+        itemAnimation()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -53,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                         product->
                         val productImage = async {getBitmap(this@MainActivity ,product.image?:"")}
                         productsViewModel.insertProduct(ProductsResponseItem(product.category ,product.description ,product.id ,null,productImage.await() ,product.price ,product.rating ,product.title))
+                        binding.progressBar.visibility = View.INVISIBLE
                     }
                 }
             }
@@ -62,33 +61,38 @@ class MainActivity : AppCompatActivity() {
             productsViewModel.localeProducts.collect{
                 productAdapter.setDataSource(DataSource.Local)
                 productAdapter.submitProductResponse(it!!)
+                binding.progressBar.visibility = View.INVISIBLE
             }
         }
+
         productAdapter.onProductClick(object :onProductClickListener{
             override fun onProductClick(
                 itemView: View,
                 productsResponseItem: ProductsResponseItem,
                 dataSource: DataSource
             ) {
-
                 val intent = Intent(this@MainActivity ,DetailActivity::class.java)
                 val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, itemView, "transitionNameA" )
-                intent.putExtra("product" ,productsResponseItem)
+                intent.putExtra("product" ,productsResponseItem?: ProductsResponse())
                 intent.putExtra("dataSource" ,dataSource)
                 startActivity(intent ,options.toBundle())
-
             }
         })
 
 
     }
 
-    fun initRecyclerView() {
+    private fun initRecyclerView() {
         binding.recyclerViewProducts.apply {
             adapter = productAdapter
             layoutManager = GridLayoutManager(this@MainActivity ,2)
         }
     }
 
-
+    private fun itemAnimation()
+    {
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = false
+    }
 }

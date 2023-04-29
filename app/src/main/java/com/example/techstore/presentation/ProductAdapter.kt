@@ -35,10 +35,8 @@ class ProductAdapter(): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>()
                 binding.textViewTitle.text = title
                 binding.textViewCategory.text = category
                 binding.textViewPrice.text = "$ $price"
-                if (dataSource == DataSource.Remote)
-                {
-                    Glide.with(context).load(image).into(binding.imageViewProduct)
-                }else Glide.with(context).load(completeImage).into(binding.imageViewProduct)
+                if (dataSource == DataSource.Remote) Glide.with(context).load(image).into(binding.imageViewProduct)
+                else Glide.with(context).load(completeImage).into(binding.imageViewProduct)
 
             }
 

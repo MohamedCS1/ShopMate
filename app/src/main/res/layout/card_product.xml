@@ -18,7 +18,35 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_launcher_background" />
 
+                <TextView
+                    android:id="@+id/textViewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Any"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/textViewCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_gravity="start"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/textViewPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$99"
+                    android:layout_gravity="start"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:textStyle="bold"/>
 
 </LinearLayout>
 
