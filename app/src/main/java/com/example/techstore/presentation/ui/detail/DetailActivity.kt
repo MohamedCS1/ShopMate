@@ -1,4 +1,4 @@
-package com.example.techstore.presentation
+package com.example.techstore.presentation.ui.detail
 
 import android.os.Bundle
 import android.view.View

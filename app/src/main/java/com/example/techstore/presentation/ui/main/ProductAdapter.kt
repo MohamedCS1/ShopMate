@@ -1,4 +1,4 @@
-package com.example.techstore.presentation
+package com.example.techstore.presentation.ui.main
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.model.ProductsResponse
 import com.example.techstore.databinding.CardProductBinding
+import com.example.techstore.presentation.ui.detail.onProductClickListener
 import com.example.techstore.util.DataSource
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.example.techstore.presentation
+package com.example.techstore.presentation.ui.detail
 
 import android.view.View
 import com.example.domain.model.ProductsResponseItem

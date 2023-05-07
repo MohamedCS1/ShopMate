@@ -1,10 +1,9 @@
-package com.example.techstore.presentation
+package com.example.techstore.presentation.ui.main
 
 import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Toast
@@ -14,12 +13,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.domain.model.ProductsResponse
 import com.example.domain.model.ProductsResponseItem
 import com.example.techstore.databinding.ActivityMainBinding
-import com.example.techstore.util.BitmapUtil.getBitmap
+import com.example.techstore.presentation.ui.detail.DetailActivity
+import com.example.techstore.presentation.ui.detail.onProductClickListener
 import com.example.techstore.util.DataSource
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -48,9 +46,7 @@ class MainActivity : AppCompatActivity() {
                     productAdapter.setDataSource(DataSource.Remote)
                     productAdapter.submitProductResponse(productsResponse?: ProductsResponse())
                     productsResponse.forEach {
-                        product->
-                        val productImage = async {getBitmap(this@MainActivity ,product.image?:"")}
-                        productsViewModel.insertProduct(ProductsResponseItem(product.category ,product.description ,product.id ,null,productImage.await() ,product.price ,product.rating ,product.title))
+                        product-> productsViewModel.insertProduct(ProductsResponseItem(product.category ,product.description ,product.id ,product.image,null ,product.price ,product.rating ,product.title))
                         binding.progressBar.visibility = View.INVISIBLE
                     }
                 }
@@ -65,13 +61,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        productAdapter.onProductClick(object :onProductClickListener{
+        productAdapter.onProductClick(object : onProductClickListener {
             override fun onProductClick(
                 itemView: View,
                 productsResponseItem: ProductsResponseItem,
                 dataSource: DataSource
             ) {
-                val intent = Intent(this@MainActivity ,DetailActivity::class.java)
+                val intent = Intent(this@MainActivity , DetailActivity::class.java)
                 val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, itemView, "transitionNameA" )
                 intent.putExtra("product" ,productsResponseItem?: ProductsResponse())
                 intent.putExtra("dataSource" ,dataSource)

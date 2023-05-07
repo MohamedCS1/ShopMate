@@ -1,4 +1,4 @@
-package com.example.techstore.presentation
+package com.example.techstore.presentation.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
